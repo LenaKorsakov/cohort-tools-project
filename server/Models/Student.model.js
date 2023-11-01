@@ -2,25 +2,26 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const languageSchema = new Schema({
-  type: String,
-  enum: [
-    'English',
-    'Spanish',
-    'French',
-    'German',
-    'Portuguese',
-    'Dutch',
-    'Other',
-  ],
-});
 const studentSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
   linkedinUrl: { type: String, default: '' },
-  languages: [languageSchema],
+  languages: [
+    {
+      type: String,
+      enum: [
+        'English',
+        'Spanish',
+        'French',
+        'German',
+        'Portuguese',
+        'Dutch',
+        'Other',
+      ],
+    },
+  ],
   program: {
     type: String,
     enum: ['Web Dev', 'UX/UI', 'Data Analytics', 'Cybersecurity'],
