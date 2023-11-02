@@ -5,6 +5,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 
 // INITIALIZE EXPRESS APP
 const app = express();
@@ -14,6 +15,8 @@ app.use(cors());
 // app.use(cors({ origin: ["http://localhost:5173"] }));
 app.use(morgan('dev'));
 app.use(express.json());
+//Using Helmet in Node.js to secure your application
+app.use(helmet());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
