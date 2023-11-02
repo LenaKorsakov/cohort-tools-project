@@ -7,6 +7,11 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 
+const {
+  errorHandler,
+  notFoundHandler,
+} = require('./middleware/error-handling');
+
 // INITIALIZE EXPRESS APP
 const app = express();
 
@@ -28,11 +33,12 @@ app.get('/docs', (req, res) => {
   res.sendFile(__dirname + '/views/docs.html');
 });
 
-app.get('*', (req, res) => {
-  res.status(404).json({ message: 'not found' });
-});
+app.use(errorHandler);
+app.use(notFoundHandler);
 
 // START SERVER
 app.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
 });
+
+module.exports = app;

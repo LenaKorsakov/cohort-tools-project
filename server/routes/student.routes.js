@@ -9,8 +9,7 @@ router.get('/', async (req, res) => {
       res.json(students);
     })
     .catch((error) => {
-      console.error('Error while retrieving  ->', error);
-      res.status(500).send({ error: 'Failed to retrieve students' });
+      next(error);
     });
 });
 
@@ -20,7 +19,9 @@ router.post('/', async (req, res) => {
     .then((newStudent) => {
       res.status(201).json(newStudent);
     })
-    .catch((error) => res.status(500).send({ error: error.message }));
+    .catch((error) => {
+      next(error);
+    });
 });
 
 router.get('/cohort/:cohortId', async (req, res) => {
@@ -31,7 +32,7 @@ router.get('/cohort/:cohortId', async (req, res) => {
     );
     res.status(200).json(students);
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
@@ -41,7 +42,7 @@ router.get('/:studentId', async (req, res) => {
     const oneStudent = await Student.findById(studentId).populate('cohort');
     res.status(200).json(oneStudent);
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
@@ -55,7 +56,7 @@ router.put('/:studentId', async (req, res) => {
     );
     res.status(200).json(updatedStudent);
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
@@ -65,7 +66,7 @@ router.delete('/:studentId', async (req, res) => {
     await Student.findByIdAndDelete(studentId);
     res.status(204).send();
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 

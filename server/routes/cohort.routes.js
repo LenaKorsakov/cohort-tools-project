@@ -2,14 +2,13 @@ const router = require('express').Router();
 const Cohort = require('../models/Cohorts.model');
 
 router.get('/', (req, res) => {
-  Cohort.find({})
+  Cohort.find(req.query)
     .then((cohorts) => {
       console.log('Retrieved cohorts ->', cohorts);
-      res.json(cohorts);
+      res.status(200).json(cohorts);
     })
     .catch((error) => {
-      console.error('Error while retrieving  ->', error);
-      res.status(500).send({ error: 'Failed to retrieve cohorts' });
+      next(error);
     });
 });
 
@@ -19,8 +18,7 @@ router.post('/', async (req, res, next) => {
     const createdCohort = await Cohort.create(cohortToCreate);
     res.status(201).json(createdCohort);
   } catch (error) {
-    console.error('Error while creating  ->', error);
-    res.status(500).send({ error: 'Failed to create a cohort' });
+    next(error);
   }
 });
 
@@ -30,8 +28,7 @@ router.get('/:cohortId', async (req, res, next) => {
     const oneCohort = await Cohort.findById(cohortId);
     res.json(oneCohort);
   } catch (error) {
-    console.error('Error while retrieving  ->', error);
-    res.status(500).send({ error: 'Failed to get the cohort' });
+    next(error);
   }
 });
 
@@ -44,8 +41,7 @@ router.put('/:cohortId', async (req, res, next) => {
     console.log('Updated cohort ->', cohortToUpdate);
     res.status(204).json(cohortToUpdate);
   } catch (error) {
-    console.error('Error while updating  ->', error);
-    res.status(500).send({ error: 'Failed to update the cohort' });
+    next(error);
   }
 });
 
@@ -57,8 +53,7 @@ router.delete('/:cohortId', (req, res, next) => {
       res.status(204).send();
     })
     .catch((error) => {
-      console.log('Error while deleting the cohort ->', error);
-      res.status(500).send({ error: 'Deleting cohort failed' });
+      next(error);
     });
 });
 
